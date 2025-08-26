@@ -2,6 +2,7 @@ import fs from 'fs';
 import imagekit from '../configs/imageKit.js';
 import Blog from '../models/Blog.js';
 import Comment from '../models/comment.js'; // <-- Added import
+import main from '../configs/gemini.js';
 
 // Add a new blog
 export const addBlog = async (req, res) => {
@@ -22,7 +23,7 @@ export const addBlog = async (req, res) => {
       fileName: imageFile.originalname,
       folder: '/blogs',
     });
-
+     fs.unlinkSync(imageFile.path);
     const optimizedImageUrl = imagekit.url({
       path: response.filePath,
       transformation: [{ quality: 'auto' }, { format: 'webp' }, { width: '1280' }],
@@ -127,3 +128,13 @@ export const getBlogComments = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+export const generateContent = async (req, res) => {
+   try{
+    const {prompt} = req.body;
+    const content= await main(prompt + 'Generate a blog content for this topic in simple text format')
+    res.json({success:true, content})
+   }catch(error){
+    res.json({ success: false, message: error.message });
+   }
+}
