@@ -1,21 +1,60 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { assets, blogCategories } from '../../assets/assets';
 import Quill from 'quill';
+import {useAppContext} from '../../context/appContext';
+import toast from 'react-hot-toast';
 
 const AddBlog = () => {
+const {axios}=useAppContext();
+const[isAdding,selectIsAdding]=useState(false);
+
   const editorRef=useRef(null);
   const quillRef=useRef(null);
   const [image, setImage] = useState(false);
   const [title, setTitle] = useState('');
   const [subTitle, setSubTitle] = useState(''); // fixed typo
+  const [category, setCategory] = useState('Startup');
   const [isPublished, setIsPublished] = useState(false);
 
   const  generateContent = async() => {
 
   }
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
+  const onSubmitHandler = async (e) => {
+    try{
+ e.preventDefault();
+  selectIsAdding(true);
+  const blog={
+    title,
+    subTitle,
+    description:quillRef.current.root.innerHTML,
+    category,
+    isPublished,
+
+  }
+  const formData=new FormData();
+  formData.append('blog',JSON.stringify(blog));
+  formData.append('image',image);
+
+  const {data}=await axios.post('/api/blog/add',formData);
+  if(data.success){
+    toast.success('Blog added successfully');
+    setImage(false);
+    setTitle('');
+    quillRef.current.root.innerHTML='';
+    setSubTitle('');
+    setCategory('Startup');
+  }else{
+    toast.error(data.message);
+  }
+    } catch(error){
+    toast.error(error.message);
+
+    }finally{
+      selectIsAdding(false);
+    }
+   
+
   }
     useEffect(() => {
 
@@ -86,7 +125,7 @@ const AddBlog = () => {
         <p>Publish Now</p>
         <input type="checkbox" checked={isPublished} className='scale-125 cursor-pointer' onChange={e=>setIsPublished(e.target.checked)}/>
        </div>
-       <button type='submit' className='mt-8 w-40 h-10 bg-primary text-white rounded cursor-pointer text-sm'>Add Blog</button>
+       <button disabled={isAdding} type='submit' className='mt-8 w-40 h-10 bg-primary text-white rounded cursor-pointer text-sm'>{isAdding?'Adding':'Add Blog'}</button>
         </div>
       </form> 
   );

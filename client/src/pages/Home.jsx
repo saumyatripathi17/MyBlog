@@ -5,6 +5,7 @@ import BlogList from '../componets/BlogList'
 import Newsletter from '../componets/Newsletter'
 import Footer from '../componets/Footer'
 
+
 const Home = () => {
   return (
     <>

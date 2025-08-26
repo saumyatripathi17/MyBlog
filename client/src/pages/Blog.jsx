@@ -13,7 +13,7 @@ import axios from 'axios';
 const Blog = () => {
   const { id } = useParams(); // Assuming you want to use the id from the URL
 
-  const {axios}=useAppContext();
+  const {axios:api}=useAppContext();
 
   const [data, setData] = useState(null);
   const [comments, setComments] = useState([]);
@@ -46,6 +46,7 @@ const Blog = () => {
         toast.success(data.message);
         setName('');
         setContent('');
+         fetchComments();
       } else {
         toast.error(data.message);
       }
@@ -78,7 +79,7 @@ const Blog = () => {
           <p className='font-semibold mb-4 bg-primary/20 w-30 rounded-2xl text-center'>comments ({comments.length})</p>
           <div className='flex flex-col gap-4'>
             {comments.map((item, index) => (
-              <div key={index} className='relative bg-primary/2 border border-primary/5 p-4 rounded text-gray-600 max-w-xl'>
+              <div key={index} className='relative bg-primary/20 border border-primary/5 p-4 rounded text-gray-600 max-w-xl'>
                 <div className='flex items-center gap-2 mb-2'>
                   <img src={assets.user_icon} alt=""  className='w-6'/>
                   <p className='font-medium'>{item.name}</p>

@@ -6,7 +6,7 @@ import Dashboard from './pages/admin/Dashboard'
 import Layout from './pages/admin/Layout'
 import AddBlog from './pages/admin/AddBlog'
 import ListBlog from './pages/admin/ListBlog'
-import Comment from './pages/admin/Comments'
+import Comments from './pages/admin/Comments.jsx'
 import Login from './componets/admin/Login'
 import 'quill/dist/quill.snow.css';
 import { Toaster } from 'react-hot-toast';
@@ -27,7 +27,7 @@ const App = () => {
           <Route index element={<Dashboard />} />
           <Route path="addBlog" element={<AddBlog />} />
           <Route path="listBlog" element={<ListBlog />} />
-          <Route path="comments" element={<Comment />} />
+          <Route path="comments" element={<Comments />} />
         </Route>
       </Routes>
     </>
