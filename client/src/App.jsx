@@ -10,7 +10,7 @@ import Comments from './pages/admin/Comments';
 import Login from './componets/admin/Login';
 import 'quill/dist/quill.snow.css';
 import { Toaster } from 'react-hot-toast';
-import { useAppContext } from './context/appContext';
+import { useAppContext } from './context/AppContext.jsx';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {

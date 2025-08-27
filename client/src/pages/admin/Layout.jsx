@@ -2,7 +2,7 @@ import React from 'react'
 import { Outlet} from 'react-router-dom';
 import {assets} from '../../assets/assets';
 import Sidebar from '../../componets/admin/Sidebar';
-import { useAppContext } from '../../context/appContext';
+import { useAppContext } from '../../context/AppContext.jsx';
 
 const Layout = () => {
     const {axios,setToken,navigate}=useAppContext();

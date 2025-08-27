@@ -64,11 +64,10 @@ export const deleteCommentById = async (req, res) => {
   }
 };
 
-
 // Approve a comment by ID
 export const approveCommentById = async (req, res) => {
   try {
-    const { id } = req.body; // match frontend
+    const { id } = req.body;
     if (!id) return res.status(400).json({ success: false, message: "Comment ID required" });
 
     await Comment.findByIdAndUpdate(id, { isApproved: true });
@@ -78,3 +77,41 @@ export const approveCommentById = async (req, res) => {
   }
 };
 
+// Toggle publish status for a blog
+export const togglePublishById = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const blog = await Blog.findById(id);
+
+    if (!blog) {
+      return res.status(404).json({ success: false, message: "Blog not found" });
+    }
+
+    blog.isPublished = !blog.isPublished;
+    await blog.save();
+
+    res.json({
+      success: true,
+      message: `Blog has been ${blog.isPublished ? "published" : "unpublished"}`,
+      blog,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Delete blog by ID
+export const deleteBlogById = async (req, res) => {
+  try {
+    const { blogId } = req.body;
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({ success: false, message: "Blog not found" });
+    }
+
+    await blog.deleteOne();
+    res.json({ success: true, message: "Blog deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

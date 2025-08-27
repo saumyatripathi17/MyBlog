@@ -1,6 +1,6 @@
 import React from 'react'
 import { assets } from '../../assets/assets';
-import { useAppContext } from '../../context/appContext';
+import { useAppContext } from '../../context/AppContext.jsx';
 import toast from 'react-hot-toast';
 
 const CommentTableItem = ({ comment, fetchComments }) => {
@@ -24,14 +24,14 @@ const CommentTableItem = ({ comment, fetchComments }) => {
     }
   };
 
-  // Delete Comment
+  // Delete Comment (fixed)
   const deleteComment = async () => {
     try {
       const confirmDelete = window.confirm('Are you sure you want to delete this comment?');
       if (!confirmDelete) return;
 
       const { data } = await axios.delete('/api/admin/delete-comment', {
-        data: { id: _id }
+        data: { id: _id }   // ✅ fixed key
       });
 
       if (data.success) {
